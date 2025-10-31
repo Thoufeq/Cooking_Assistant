@@ -1,0 +1,65 @@
+# Core Python and Notebook Utilities
+ipykernel
+pandas
+numpy
+scipy
+matplotlib
+seaborn
+plotly
+
+# Machine Learning / Modeling
+scikit-learn
+imblearn
+xgboost
+catboost
+
+# Natural Language Processing and Embeddings
+nltk
+spacy
+transformers
+sentence-transformers
+faiss-cpu
+
+# Generative AI and API integration
+openai
+
+# Data storage and cloud
+pymongo
+boto3
+mypy-boto3-s3
+botocore
+
+# Monitoring and MLOps
+mlflow
+neuro_mf
+
+# Utilities and Config Management
+dill
+PyYAML
+from_root
+python-dotenv
+loguru
+
+# Backend / Web Application
+fastapi
+uvicorn
+jinja2
+python-multipart
+gradio
+flask==3.1.1
+
+# Visualization and Debugging
+matplotlib
+plotly
+seaborn
+
+#LLM and NlP
+langchain==0.3.26
+sentence-transformers==4.1.0
+pypdf==5.6.1
+langchain-pinecone==0.2.8
+langchain-openai==0.3.24
+langchain-community==0.3.26
+
+# Local Package Installation
+-e .
