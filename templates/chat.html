@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodBot - Your Culinary Assistant</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="chatbot-wrapper">
+            <div class="chatbot-header">
+                <div class="header-content">
+                    <div class="bot-avatar">
+                        <span class="chef-hat">👨‍🍳</span>
+                    </div>
+                    <div class="bot-info">
+                        <h1>FoodBot</h1>
+                        <p class="status">
+                            <span class="status-dot"></span>
+                            Online - Ready to help!
+                        </p>
+                    </div>
+                </div>
+                <div class="header-decoration">
+                    <span class="food-icon">🍕</span>
+                    <span class="food-icon">🍔</span>
+                    <span class="food-icon">🍜</span>
+                </div>
+            </div>
+
+            <div class="chat-container">
+                <div class="messages-wrapper">
+                    <div class="message bot-message">
+                        <div class="message-avatar">👨‍🍳</div>
+                        <div class="message-content">
+                            <p>Hello! I'm FoodBot, your personal culinary assistant! 🍴</p>
+                        </div>
+                    </div>
+
+                    <div class="message bot-message">
+                        <div class="message-avatar">👨‍🍳</div>
+                        <div class="message-content">
+                            <p>I can help you with recipes, cooking tips, restaurant recommendations, and more! What would you like to know?</p>
+                        </div>
+                    </div>
+
+                    <div class="message user-message">
+                        <div class="message-content">
+                            <p>What's a good recipe for pasta?</p>
+                        </div>
+                        <div class="message-avatar">😊</div>
+                    </div>
+
+                    <div class="message bot-message">
+                        <div class="message-avatar">👨‍🍳</div>
+                        <div class="message-content">
+                            <p>Great choice! Here's a classic Spaghetti Aglio e Olio recipe:</p>
+                            <p><strong>Ingredients:</strong> 🍝<br>
+                            • Spaghetti - 400g<br>
+                            • Garlic - 6 cloves<br>
+                            • Olive oil - 1/2 cup<br>
+                            • Red pepper flakes<br>
+                            • Fresh parsley</p>
+                        </div>
+                    </div>
+
+                    <div class="message user-message">
+                        <div class="message-content">
+                            <p>That sounds delicious! Thank you!</p>
+                        </div>
+                        <div class="message-avatar">😊</div>
+                    </div>
+
+                    <div class="typing-indicator">
+                        <div class="message-avatar">👨‍🍳</div>
+                        <div class="typing-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <button class="quick-btn">🍕 Pizza Recipes</button>
+                <button class="quick-btn">🥗 Healthy Options</button>
+                <button class="quick-btn">🍰 Desserts</button>
+                <button class="quick-btn">🍳 Breakfast Ideas</button>
+            </div>
+
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <input type="text" class="message-input" placeholder="Ask me about recipes, cooking tips, or restaurants...">
+                    <button class="emoji-btn">😋</button>
+                    <button class="send-btn">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="currentColor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="food-decoration">
+                <span class="float-food">🍔</span>
+                <span class="float-food">🍕</span>
+                <span class="float-food">🍜</span>
+                <span class="float-food">🍰</span>
+                <span class="float-food">🥗</span>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    function appendUserMessage(message) {
+        const userHtml = `
+            <div class="message user-message">
+                <div class="message-content">
+                    <p>${message}</p>
+                </div>
+                <div class="message-avatar">😊</div>
+            </div>`;
+        $(".messages-wrapper").append(userHtml);
+    }
+
+    function appendBotMessage(message) {
+        const botHtml = `
+            <div class="message bot-message">
+                <div class="message-avatar">👨‍🍳</div>
+                <div class="message-content"><p>${message}</p></div>
+            </div>`;
+        $(".messages-wrapper").append(botHtml);
+    }
+
+    function showTyping() {
+        const typingHtml = `
+            <div class="typing-indicator" id="typing">
+                <div class="message-avatar">👨‍🍳</div>
+                <div class="typing-dots">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>`;
+        $(".messages-wrapper").append(typingHtml);
+    }
+
+    function removeTyping() {
+        $("#typing").remove();
+    }
+
+    $(".send-btn").on("click", function() {
+        const message = $(".message-input").val().trim();
+        if (message === "") return;
+
+        appendUserMessage(message);
+        $(".message-input").val("");
+
+        showTyping();
+
+        $.ajax({
+            type: "POST",
+            url: "/get",
+            data: { msg: message },
+            success: function(data) {
+                removeTyping();
+                appendBotMessage(data);
+                $(".messages-wrapper").scrollTop($(".messages-wrapper")[0].scrollHeight);
+            },
+            error: function() {
+                removeTyping();
+                appendBotMessage("⚠️ Sorry, something went wrong. Please try again!");
+            }
+        });
+    });
+
+    $(".message-input").on("keypress", function(e) {
+        if (e.which === 13) {
+            $(".send-btn").click();
+            return false;
+        }
+    });
+});
+</script>
+</body>
+</html>
