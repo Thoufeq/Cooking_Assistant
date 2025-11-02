@@ -31,63 +31,15 @@
 
             <div class="chat-container">
                 <div class="messages-wrapper">
-                    <div class="message bot-message">
-                        <div class="message-avatar">👨‍🍳</div>
-                        <div class="message-content">
-                            <p>Hello! I'm FoodBot, your personal culinary assistant! 🍴</p>
-                        </div>
-                    </div>
 
-                    <div class="message bot-message">
-                        <div class="message-avatar">👨‍🍳</div>
-                        <div class="message-content">
-                            <p>I can help you with recipes, cooking tips, restaurant recommendations, and more! What would you like to know?</p>
-                        </div>
-                    </div>
-
-                    <div class="message user-message">
-                        <div class="message-content">
-                            <p>What's a good recipe for pasta?</p>
-                        </div>
-                        <div class="message-avatar">😊</div>
-                    </div>
-
-                    <div class="message bot-message">
-                        <div class="message-avatar">👨‍🍳</div>
-                        <div class="message-content">
-                            <p>Great choice! Here's a classic Spaghetti Aglio e Olio recipe:</p>
-                            <p><strong>Ingredients:</strong> 🍝<br>
-                            • Spaghetti - 400g<br>
-                            • Garlic - 6 cloves<br>
-                            • Olive oil - 1/2 cup<br>
-                            • Red pepper flakes<br>
-                            • Fresh parsley</p>
-                        </div>
-                    </div>
-
-                    <div class="message user-message">
-                        <div class="message-content">
-                            <p>That sounds delicious! Thank you!</p>
-                        </div>
-                        <div class="message-avatar">😊</div>
-                    </div>
-
-                    <div class="typing-indicator">
-                        <div class="message-avatar">👨‍🍳</div>
-                        <div class="typing-dots">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </div>
                 </div>
             </div>
 
             <div class="quick-actions">
-                <button class="quick-btn">🍕 Pizza Recipes</button>
-                <button class="quick-btn">🥗 Healthy Options</button>
-                <button class="quick-btn">🍰 Desserts</button>
-                <button class="quick-btn">🍳 Breakfast Ideas</button>
+                <button class="quick-btn">Pizza Recipes</button>
+                <button class="quick-btn">Healthy Options</button>
+                <button class="quick-btn">Desserts</button>
+                <button class="quick-btn">Breakfast Ideas</button>
             </div>
 
             <div class="input-container">
@@ -114,6 +66,7 @@
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 $(document).ready(function() {
     function appendUserMessage(message) {
@@ -151,13 +104,11 @@ $(document).ready(function() {
         $("#typing").remove();
     }
 
-    $(".send-btn").on("click", function() {
-        const message = $(".message-input").val().trim();
+    function sendMessage(message) {
         if (message === "") return;
 
         appendUserMessage(message);
         $(".message-input").val("");
-
         showTyping();
 
         $.ajax({
@@ -174,6 +125,11 @@ $(document).ready(function() {
                 appendBotMessage("⚠️ Sorry, something went wrong. Please try again!");
             }
         });
+    }
+
+    $(".send-btn").on("click", function() {
+        const message = $(".message-input").val().trim();
+        sendMessage(message);
     });
 
     $(".message-input").on("keypress", function(e) {
@@ -181,6 +137,12 @@ $(document).ready(function() {
             $(".send-btn").click();
             return false;
         }
+    });
+
+    // ✅ Make quick action buttons functional
+    $(".quick-btn").on("click", function() {
+        const quickMessage = $(this).text().replace(/^[🍕🥗🍰🍳]\s*/, ''); // remove emoji prefix
+        sendMessage(quickMessage);
     });
 });
 </script>
